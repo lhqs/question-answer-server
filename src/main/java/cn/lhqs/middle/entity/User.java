@@ -10,7 +10,16 @@ package cn.lhqs.middle.entity;
 public class User {
     private String username;
     private String sex;
+    private String userId;
     private int age;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getUsername() {
         return username;

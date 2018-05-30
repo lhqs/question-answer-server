@@ -2,10 +2,7 @@ package cn.lhqs.middle.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +39,11 @@ public class TempController {
         }
         logger.info("ip --> "+ ip);
         return ip;
+    }
+
+    @GetMapping(value = "/getParamsTest")
+    public String getParamTest(@RequestParam(value = "id", required = false, defaultValue = "0") Integer id) {
+        return "id:"+id;
     }
 
 
