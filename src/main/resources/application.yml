@@ -1,13 +1,47 @@
 server:
-  port: 8000
+  port: 8099
 
+#spring:
+#  datasource:
+#    url: jdbc:mysql://gu.lhqs1314.cn:3306/temp
+#    username: root
+#    password: lhqs
+#    driver-class-name: com.mysql.jdbc.Driver
+
+#mybatis:
+#  configuration:
+#   map-underscore-to-camel-case: true #开启驼峰映射
+#spring:
+#  mvc:
+#    favicon:
+#      enabled: false
 spring:
   datasource:
-    url: jdbc:mysql://gu.lhqs1314.cn:3306/temp
     username: root
-    password: root
+    password: lhqs
+    url: jdbc:mysql://47.98.185.45:3306/java_test?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
 
-mybatis:
-  configuration:
-   map-underscore-to-camel-case: true #开启驼峰映射
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j  #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+##pagehelper
+#pagehelper:
+#    helperDialect: mysql
+#    reasonable: true
+#    supportMethodsArguments: true
+#    params: count=countSql

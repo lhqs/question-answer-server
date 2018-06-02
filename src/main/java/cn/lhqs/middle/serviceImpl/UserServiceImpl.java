@@ -1,6 +1,6 @@
 package cn.lhqs.middle.serviceImpl;
 
-import cn.lhqs.middle.entity.User;
+import cn.lhqs.middle.entity.UserInfo;
 import cn.lhqs.middle.mapper.UserMapper;
 import cn.lhqs.middle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +23,17 @@ public class UserServiceImpl  implements UserService {
     UserMapper userMapper;
 
     @Override
-    public List<User> list() {
-        return userMapper.list();
+    public int loginTest(String username, String password) {
+        return userMapper.loginTest(username, password);
     }
 
     @Override
-    public List<User> findByUsername(String username) {
-        return userMapper.findByUsername(username);
+    public UserInfo getUserInfo(String token) {
+        return userMapper.getUserInfo(token);
     }
 
     @Override
-    public User get(String userId) {
-        return userMapper.getOne(userId);
-    }
-
-    @Override
-    public int delete(String userId) {
-        return userMapper.delete(userId);
+    public int updateRequestNums(String token) {
+        return userMapper.updateRequestNums(token);
     }
 }

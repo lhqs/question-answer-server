@@ -1,14 +1,10 @@
 package cn.lhqs.middle.controller;
 
-import cn.lhqs.middle.entity.User;
+import cn.lhqs.middle.entity.UserInfo;
 import cn.lhqs.middle.service.UserService;
-import cn.lhqs.middle.serviceImpl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -44,13 +40,12 @@ public class HelloController {
 
     @GetMapping("/obj")
     // @CrossOrigin("http://localhost:8099")
-    public User getObj() {
-        User user = new User();
-        user.setAge(23);
-        user.setSex("男");
-        user.setUsername("lhqs");
-        logger.info("user ----> "+ user);
-        return user;
+    public UserInfo getObj() {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setSex(1);
+        userInfo.setUsername("lhqs");
+        logger.info("userInfo ----> " + userInfo);
+        return userInfo;
     }
 
     @GetMapping("getList")
@@ -65,16 +60,14 @@ public class HelloController {
 
     @GetMapping("getListobj")
     public List getListObj() {
-        List<User> list = new ArrayList<>();
-        User user = new User();
-        user.setUsername("lhqs");
-        user.setAge(34);
-        User user2 = new User();
-        user2.setUsername("lhqs");
-        user2.setAge(34);
+        List<UserInfo> list = new ArrayList<>();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername("lhqs");
+        UserInfo userInfo2 = new UserInfo();
+        userInfo2.setUsername("lhqs");
 
-        list.add(user);
-        list.add(user2);
+        list.add(userInfo);
+        list.add(userInfo2);
 
         return list;
     }
@@ -82,21 +75,29 @@ public class HelloController {
     @GetMapping("getMap")
     public Map<Integer, String> getMap() {
         Map<Integer, String> map = new HashMap<>();
-        map.put(1,"one");
-        map.put(2,"two");
-        return map ;
+        map.put(1, "one");
+        map.put(2, "two");
+        return map;
     }
 
     @GetMapping("getEx")
     public Map<Integer, String> getEx() {
         Map<Integer, String> map = new HashMap<>();
-        map.put(1,"one");
-        map.put(2,"two");
+        map.put(1, "one");
+        map.put(2, "two");
         throw new RuntimeException("nini ");
     }
 
-    @GetMapping("getUserList")
-    public List getUserList() {
-        return userServiceImpl.list();
+    @GetMapping("/testget")
+    public String testget(@RequestParam("one") String one) {
+        System.out.println(one);
+        return one;
+    }
+
+    @PostMapping("/testpost")
+    public String testpost(@RequestParam("one") String one) {
+        System.out.println(one);
+        return one;
     }
 }
+

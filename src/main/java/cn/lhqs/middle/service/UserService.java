@@ -1,6 +1,6 @@
 package cn.lhqs.middle.service;
 
-import cn.lhqs.middle.entity.User;
+import cn.lhqs.middle.entity.UserInfo;
 
 import java.util.List;
 
@@ -13,12 +13,19 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> list();
+    // List<UserInfo> list();
+    //
+    // List<UserInfo> findByUsername(String username);
+    //
+    // UserInfo get(String userId);
+    //
+    // int delete(String userId);
 
-    List<User> findByUsername(String username);
+    int loginTest(String username, String password);
 
-    User get(String userId);
+    UserInfo getUserInfo(String token);
 
-    int delete(String userId);
+    int updateRequestNums(String token);
+
 
 }
