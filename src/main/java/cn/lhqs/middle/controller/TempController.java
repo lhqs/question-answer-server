@@ -41,7 +41,7 @@ public class TempController {
         return ip;
     }
 
-    @GetMapping(value = "/getParamsTest")
+    @GetMapping(value = "/getParamsTest1")
     public String getParamTest(@RequestParam(value = "id", required = false, defaultValue = "0") Integer id) {
         return "id:"+id;
     }

@@ -5,7 +5,7 @@
 
 	<groupId>cn.lhqs</groupId>
 	<artifactId>middle</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>middle</name>
@@ -84,6 +84,12 @@
 			<artifactId>pagehelper</artifactId>
 			<version>4.1.0</version>
 		</dependency>-->
+
+		<!--热部署组件，与 ctrl + F9 联合使用-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
 
 	</dependencies>
 
