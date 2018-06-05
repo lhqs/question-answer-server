@@ -1,5 +1,8 @@
 package cn.lhqs.middle;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,23 +19,40 @@ import java.net.URLConnection;
 public class MainClass {
 
     public static void main(String[] args) {
-        System.out.println(getAddressByIP("61.153.48.135"));
+        String json = getAddressByIP("0:0:0:0:0:0:0:1");
+        System.out.println(json);
+        // IpObject parse = (IpObject) JSON.parse(json);
+        // System.out.println(parse.getCode());
+        // System.out.println(parse.getData());
+        JSONObject jsonObject = JSON.parseObject(json);
+        String data = jsonObject.get("data").toString();
+        JSONObject jsonData = JSON.parseObject(data);
+        System.out.println(jsonData.get("country").toString() + jsonData.get("city").toString());
+
     }
 
     public static String getAddressByIP(String strIP) {
         String line = null;
+        BufferedReader reader = null;
+        StringBuffer result = new StringBuffer();
         try {
             URL url = new URL("http://ip.taobao.com/service/getIpInfo.php?ip=" + strIP);
             URLConnection conn = url.openConnection();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-            StringBuffer result = new StringBuffer();
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
             while ((line = reader.readLine()) != null) {
                 result.append(line);
             }
-            reader.close();
-            return result.toString();
         } catch (IOException e) {
-            return "暂时无法通过ip获取地址";
+            e.printStackTrace();
+        } finally {
+            if( reader != null ){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+        return result.toString();
     }
 }

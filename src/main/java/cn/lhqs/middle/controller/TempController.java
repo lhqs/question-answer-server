@@ -1,5 +1,7 @@
 package cn.lhqs.middle.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +45,8 @@ public class TempController {
 
     @GetMapping(value = "/getParamsTest1")
     public String getParamTest(@RequestParam(value = "id", required = false, defaultValue = "0") Integer id) {
+        // JsonInclude
+        // JsonParser
         return "id:"+id;
     }
 

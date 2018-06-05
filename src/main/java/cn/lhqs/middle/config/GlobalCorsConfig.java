@@ -26,7 +26,11 @@ public class GlobalCorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 //配置允许跨域访问的路径
-                registry.addMapping("/**");
+                // registry.addMapping("/**");
+
+                registry.addMapping("/**").allowedOrigins("*")
+                        .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
+                        .allowCredentials(false).maxAge(3600);
             }
         };
     }
