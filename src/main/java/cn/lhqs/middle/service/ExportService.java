@@ -16,4 +16,6 @@ public interface ExportService {
 
     OutputStream exportExcelForLog(DataTimeSelect dataTimeSelect, OutputStream outputStream) throws IOException;
     OutputStream exportExcelForLog(String startTime, String endTime, OutputStream outputStream) throws IOException;
+
+    public OutputStream exportCsvForLog(DataTimeSelect dataTimeSelect, OutputStream outputStream);
 }

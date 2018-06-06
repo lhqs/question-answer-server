@@ -81,16 +81,19 @@ public class LogController {
                                    @RequestParam("startTime") String startTime,
                                    @RequestParam("endTime")String endTime) {
         // String username = request.getHeader("X-Token");
-        if(endTime == null) {
-            System.out.println("endtime is null");
-        }
-        if(endTime == ""){
-            System.out.println("endtime is Blank");
-        }
         logger.info("pageNum:"+pageNum + ";  pageSize:"+pageSize  + "; startTime:"+startTime+ "; endTime:"+ endTime);
         PageInfo<OperateLogRes> logList = loggerService.getLogList(pageNum, pageSize,startTime, endTime);
         return new ReturnResult(20000,"success", logList);
     }
+
+    // @GetMapping("/log/getLogList")
+    // @ResponseBody
+    // public ReturnResult getLogList(HttpServletRequest request, @RequestBody DatetimeView datetimeView) {
+    //     // String username = request.getHeader("X-Token");
+    //     logger.info("datetimeView:"+datetimeView);
+    //     // PageInfo<OperateLogRes> logList = loggerService.getLogList(pageNum, pageSize,startTime, endTime);
+    //     return new ReturnResult(20000,"success", "test");
+    // }
 
     @DeleteMapping("/log/deleteLogById")
     @ResponseBody
@@ -106,7 +109,7 @@ public class LogController {
         logger.info("startTime : "+startTime);
         logger.info("endTime : "+endTime);
         response.setHeader("Content-Type", "application/vnd.ms-excel");
-        response.setHeader("content-disposition", "attachment;filename=user-operate-log("+ TimeTools.dateFormatNow(TimeTools.DATE_TYPE5)+").xlsx");
+        response.setHeader("content-disposition", "attachment;filename=user-operate-log("+ TimeTools.dateFormatNow(TimeTools.DATE_TYPE1)+").xlsx");
         try {
             exportService.exportExcelForLog(startTime,endTime,response.getOutputStream());
         } catch (IOException e) {
@@ -120,12 +123,26 @@ public class LogController {
     public ReturnResult exportLogByTime( DataTimeSelect dataTimeSelect , HttpServletResponse response){
         logger.info("dataTimeSelect : "+dataTimeSelect);
         response.setHeader("Content-Type", "application/vnd.ms-excel");
-        response.setHeader("content-disposition", "attachment;filename=user-operate-log("+ TimeTools.dateFormatNow(TimeTools.DATE_TYPE1)+").xlsx");
+        response.setHeader("content-disposition", "attachment;filename=user-log-excel("+ TimeTools.dateFormatNow(TimeTools.DATE_TYPE1)+").xlsx");
         try {
             // exportService.exportExcelForLog(startTime,endTime,response.getOutputStream());
             exportService.exportExcelForLog(dataTimeSelect, response.getOutputStream());
         } catch (IOException e) {
             logger.info("excel导出有误"+e);
+            return ReturnResult.fail;
+        }
+        return ReturnResult.ok;
+    }
+
+    @GetMapping(value = "/log/exportLogForCsv")
+    public ReturnResult exportTransactionRecord(DataTimeSelect dataTimeSelect, HttpServletResponse response){
+        logger.info("请求导出参数--->" + dataTimeSelect);
+        response.setContentType("application/csv;charset=gb18030");
+        response.setHeader("Content-Disposition", "attachment; filename=user-log-csv(" + TimeTools.dateFormatNow(TimeTools.DATE_TYPE1)+").csv");
+        try {
+            exportService.exportCsvForLog(dataTimeSelect, response.getOutputStream());
+        } catch (IOException e) {
+            logger.info("exportLogForCsv-error:", e);
             return ReturnResult.fail;
         }
         return ReturnResult.ok;

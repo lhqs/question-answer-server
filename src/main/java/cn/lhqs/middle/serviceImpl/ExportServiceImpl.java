@@ -5,15 +5,20 @@ import cn.lhqs.middle.entity.OperateLogRes;
 import cn.lhqs.middle.service.ExportService;
 import cn.lhqs.middle.service.LoggerService;
 import cn.lhqs.middle.utils.TimeTools;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
@@ -25,6 +30,8 @@ import java.util.List;
  */
 @Service
 public class ExportServiceImpl implements ExportService{
+
+    private static Logger logger = LoggerFactory.getLogger(ExportServiceImpl.class);
 
     @Resource
     LoggerService loggerService;
@@ -87,5 +94,44 @@ public class ExportServiceImpl implements ExportService{
         workbook.write(outputStream);
         outputStream.close();
         return outputStream;
+    }
+
+    @Override
+    public OutputStream exportCsvForLog(DataTimeSelect dataTimeSelect, OutputStream out) {
+        String tableHead = "用户名,IP,IP位置,点击页面,查询内容,操作时间,操作设备";
+        OutputStreamWriter osw = null;
+        BufferedWriter bw = null;
+        List<OperateLogRes> logListByTime = loggerService.getLogListByTime(dataTimeSelect);
+        try {
+            osw = new OutputStreamWriter(out, "GBK");
+            bw = new BufferedWriter(osw);
+            bw.append(tableHead).append("\r");
+
+            for (int row = 0; row < logListByTime.size(); row++) {
+                OperateLogRes logRes = logListByTime.get(row);
+                bw.append(logRes.getUsername()).append(",");
+                bw.append(logRes.getIp()).append(",");
+                bw.append(logRes.getIpAddr()).append(",");
+                bw.append(logRes.getClickPage()).append(",");
+                bw.append("\"").append(logRes.getOperateContent()).append("\"").append(",");
+                bw.append(TimeTools.dateFormat(logRes.getCreateTime(),TimeTools.DATE_TYPE1)).append(",");
+                bw.append(logRes.getOrigin()).append(",");
+                bw.append("\r");
+            }
+        } catch (Exception e) {
+            logger.error("生成csv文件出错", e);
+        } finally {
+            try {
+                if(bw != null){
+                    bw.close();
+                }
+                if(osw != null){
+                    osw.close();
+                }
+            } catch (IOException e) {
+                logger.error("关闭文件导出有误",e);
+            }
+        }
+        return out;
     }
 }
